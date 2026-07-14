@@ -3,11 +3,15 @@
 <script>!function(){var s=localStorage.getItem('nexusTheme');if(!s){try{var d=JSON.parse(localStorage.getItem('nexusCMS')||'{}');s=(d.settings&&d.settings.defaultTheme)||'light'}catch(e){s='light'}}if(s==='light')document.documentElement.classList.add('light-theme')}()</script>
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>QUANTUMEXE | Technologies</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="icon" href="assets/favicon-16.png" type="image/png" sizes="16x16">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" sizes="180x180">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Outfit:wght@400;500;600;700;800&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <!-- CMS loader runs before GSAP so data is ready -->
   <script src="cms.js?v=20260712"></script>
@@ -17,6 +21,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
 <body>
+
+  <!-- Arctic frost atmosphere (light theme) -->
+  <div class="frost-sky" aria-hidden="true"></div>
 
   <!-- Cursor -->
   <div id="cursor" class="cursor">
@@ -51,6 +58,7 @@
   <header class="header" id="header">
     <div class="container header-inner">
       <a href="#home" class="logo">
+        <img class="logo-mark-img" src="assets/qe-logo.svg?v=12" width="44" height="48" alt="QE">
         <span class="logo-mark cms-logo-mark">QE</span>
         <img class="cms-logo-img logo-img-el" src="" alt="Logo" style="display:none">
         <div class="logo-text-wrap">
@@ -80,33 +88,79 @@
     </div>
   </header>
 
-  <!-- HOME LANDING: hero + tapes share first viewport -->
+  <!-- HOME LANDING: arctic frost shell + hero -->
   <div class="home-landing">
   <!-- HERO -->
-  <section id="home" class="hero">
+  <section id="home" class="hero frost-hero">
     <canvas id="heroCanvas" class="hero-canvas space-fx-canvas"></canvas>
     <div class="hero-noise"></div>
-    <div class="hero-content">
-      <div class="hero-badge reveal-fade" data-delay="0">
-        <span class="badge-dot"></span>
-        <span id="cms-hero-badge">Your Vision. Our Technology.</span>
+    <div class="hero-shell">
+      <div class="hero-split">
+        <div class="hero-content">
+          <div class="hero-badge reveal-fade" data-delay="0">
+            <span class="badge-dot"></span>
+            <span id="cms-hero-badge">Your Vision. Our Technology.</span>
+          </div>
+          <h1 class="hero-title">
+            <span id="cms-hero-l1" class="glitch-line reveal-up" data-delay="200" data-text="ENGINEERING">ENGINEERING</span>
+            <span id="cms-hero-l2" class="glitch-line accent reveal-up" data-delay="350" data-text="BRILLIANT">BRILLIANT</span>
+            <span id="cms-hero-l3" class="glitch-line reveal-up" data-delay="500" data-text="SOFTWARE">SOFTWARE</span>
+          </h1>
+          <p id="cms-hero-sub" class="hero-sub reveal-fade" data-delay="700">We design, build and scale high-performance digital products that transform businesses and delight users.</p>
+          <div class="hero-cta reveal-fade" data-delay="900">
+            <a href="#services" class="btn btn-primary magnetic">
+              <span id="cms-cta1" class="btn-text">Our Services</span>
+              <span class="btn-arrow" aria-hidden="true">→</span>
+              <span class="btn-glow"></span>
+            </a>
+            <a href="about.html" class="btn btn-outline magnetic">
+              <span id="cms-cta2" class="btn-text">View Our Work</span>
+              <span class="btn-arrow" aria-hidden="true">→</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="hero-visual reveal-fade" data-delay="500" aria-hidden="true">
+          <div class="qe-stage">
+            <div class="qe-ring qe-ring-1"></div>
+            <div class="qe-ring qe-ring-2"></div>
+            <div class="qe-ring qe-ring-3"></div>
+            <div class="qe-ring qe-ring-4"></div>
+            <img class="qe-logo-img" src="assets/qe-3d-hero.png?v=1" width="420" height="520" alt="QE logo">
+            <div class="qe-floor-glow"></div>
+          </div>
+        </div>
       </div>
-      <h1 class="hero-title">
-        <span id="cms-hero-l1" class="glitch-line reveal-up" data-delay="200" data-text="ENGINEERING">ENGINEERING</span>
-        <span id="cms-hero-l2" class="glitch-line accent reveal-up" data-delay="350" data-text="BRILLIANT">BRILLIANT</span>
-        <span id="cms-hero-l3" class="glitch-line reveal-up" data-delay="500" data-text="SOFTWARE">SOFTWARE</span>
-      </h1>
-      <p id="cms-hero-sub" class="hero-sub reveal-fade" data-delay="700">We design, build and scale high-performance digital products that transform businesses and delight users.</p>
-      <div class="hero-cta reveal-fade" data-delay="900">
-        <a href="#services" class="btn btn-primary magnetic">
-          <span id="cms-cta1" class="btn-text">Our Services</span>
-          <span class="btn-glow"></span>
+
+      <div class="frost-features">
+        <a class="frost-card" href="services.html">
+          <span class="frost-card-icon">&lt;/&gt;</span>
+          <strong>Custom Software</strong>
+          <p>Tailored platforms built for performance and scale.</p>
+          <span class="frost-card-go">→</span>
         </a>
-        <a href="about.html" class="btn btn-outline magnetic">
-          <span id="cms-cta2" class="btn-text">View Our Work</span>
+        <a class="frost-card" href="services.html">
+          <span class="frost-card-icon">☁</span>
+          <strong>Cloud &amp; DevOps</strong>
+          <p>Secure infrastructure with CI/CD and monitoring.</p>
+          <span class="frost-card-go">→</span>
+        </a>
+        <a class="frost-card" href="services.html">
+          <span class="frost-card-icon">🛡</span>
+          <strong>Cybersecurity</strong>
+          <p>Hardened systems, firewalls, and backup strategy.</p>
+          <span class="frost-card-go">→</span>
+        </a>
+        <a class="frost-card" href="services.html">
+          <span class="frost-card-icon">📈</span>
+          <strong>Digital Growth</strong>
+          <p>Products that convert, retain, and expand your reach.</p>
+          <span class="frost-card-go">→</span>
         </a>
       </div>
+
     </div>
+
     <div class="hero-scroll-indicator" aria-hidden="true">
       <div class="scroll-mouse" title="Scroll">
         <div class="scroll-wheel"></div>
@@ -128,7 +182,7 @@
   </section>
 
   <!-- TAPE 1 — Services (scrolls LEFT) -->
-  <div class="marquee-wrap">
+  <div class="marquee-wrap home-tape">
     <div class="marquee-track">
       <span>WEB DESIGN &amp; DEVELOPMENT</span><span class="dot">●</span>
       <span>MOBILE APP DEVELOPMENT</span><span class="dot">●</span>
@@ -160,7 +214,7 @@
   </div>
 
   <!-- TAPE 2 — Tech stack (scrolls RIGHT) -->
-  <div class="tech-tape-wrap">
+  <div class="tech-tape-wrap home-tape">
     <div class="tech-tape-track">
 
       <!-- ── set 1 ── -->
@@ -178,7 +232,7 @@
       <div class="tech-item"><img src="https://cdn.simpleicons.org/rust/f74c00" width="26" height="26" alt="Rust"><span>Rust</span></div>
       <div class="tech-item"><img src="https://cdn.simpleicons.org/docker/1d63ed" width="26" height="26" alt="Docker"><span>Docker</span></div>
       <div class="tech-item"><img src="https://cdn.simpleicons.org/kubernetes/326ce5" width="26" height="26" alt="Kubernetes"><span>Kubernetes</span></div>
-      <div class="tech-item"><img src="assets/aws.svg" width="26" height="26" alt="AWS"><span>AWS</span></div>
+      <div class="tech-item"><img src="https://cdn.simpleicons.org/amazonwebservices/ff9900" width="26" height="26" alt="AWS"><span>AWS</span></div>
       <div class="tech-item"><img src="https://cdn.simpleicons.org/mongodb/47a248" width="26" height="26" alt="MongoDB"><span>MongoDB</span></div>
       <div class="tech-item"><img src="https://cdn.simpleicons.org/postgresql/4169e1" width="26" height="26" alt="PostgreSQL"><span>PostgreSQL</span></div>
       <div class="tech-item"><img src="https://cdn.simpleicons.org/redis/ff4438" width="26" height="26" alt="Redis"><span>Redis</span></div>
@@ -202,7 +256,7 @@
       <div class="tech-item"><img src="https://cdn.simpleicons.org/rust/f74c00" width="26" height="26" alt="Rust"><span>Rust</span></div>
       <div class="tech-item"><img src="https://cdn.simpleicons.org/docker/1d63ed" width="26" height="26" alt="Docker"><span>Docker</span></div>
       <div class="tech-item"><img src="https://cdn.simpleicons.org/kubernetes/326ce5" width="26" height="26" alt="Kubernetes"><span>Kubernetes</span></div>
-      <div class="tech-item"><img src="assets/aws.svg" width="26" height="26" alt="AWS"><span>AWS</span></div>
+      <div class="tech-item"><img src="https://cdn.simpleicons.org/amazonwebservices/ff9900" width="26" height="26" alt="AWS"><span>AWS</span></div>
       <div class="tech-item"><img src="https://cdn.simpleicons.org/mongodb/47a248" width="26" height="26" alt="MongoDB"><span>MongoDB</span></div>
       <div class="tech-item"><img src="https://cdn.simpleicons.org/postgresql/4169e1" width="26" height="26" alt="PostgreSQL"><span>PostgreSQL</span></div>
       <div class="tech-item"><img src="https://cdn.simpleicons.org/redis/ff4438" width="26" height="26" alt="Redis"><span>Redis</span></div>

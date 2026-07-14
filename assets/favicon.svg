@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="QE">
+  <rect width="64" height="64" rx="14" fill="#0a0e18"/>
+  <g transform="translate(8,4) scale(0.24)">
+    <path fill="#00eaff" fill-opacity="0.35" d="M100 15 L182 63 V158 L100 205 L18 158 V63 Z"/>
+    <path fill="#fff" fill-rule="evenodd" d="
+      M100 15 L18 63 L18 158 L100 205 L100 186 L88 179 L88 174 L100 167 L100 15 Z
+      M83 44 L83 149 L34 148 L34 73 Z"/>
+    <path fill="#fff" d="
+      M108 33 H124 V188 H108 Z
+      M108 33 L182 75 L182 94 L124 61 V33 Z
+      M124 97 H171 L180 110 L171 123 H124 Z
+      M124 160 L182 127 L182 146 L108 188 H124 Z"/>
+  </g>
+</svg>

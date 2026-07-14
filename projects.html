@@ -8,6 +8,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" sizes="180x180">
   <link rel="stylesheet" href="styles.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
@@ -134,7 +137,7 @@
       <div id="pp-empty" class="pp-empty" style="display:none">
         <span style="font-size:3rem">📂</span>
         <h3>No projects yet</h3>
-        <p>Go to the <a href="admin.html">Admin Panel → Projects</a>, enter your GitHub username, and click <strong>Fetch Repos</strong>.</p>
+        <p>Projects will appear here once they are published.</p>
       </div>
 
     </div>
@@ -238,10 +241,31 @@
     async function loadCached() {
       try {
         const s = localStorage.getItem(LS_KEY);
-        if (s) return JSON.parse(s);
-        const r = await fetch('cms-data.json');
-        return await r.json();
-      } catch { return null; }
+        if (s) {
+          const draft = JSON.parse(s);
+          if (draft && draft._draft === true) return draft;
+        }
+        const r = await fetch('cms-data.json?v=20260715a');
+        const published = await r.json();
+        return published;
+      } catch {
+        try {
+          const s = localStorage.getItem(LS_KEY);
+          return s ? JSON.parse(s) : null;
+        } catch { return null; }
+      }
+    }
+
+    function listenLiveUpdates(reload) {
+      try {
+        const ch = new BroadcastChannel('nexusCMS-live');
+        ch.onmessage = (e) => {
+          if (e.data && e.data.type === 'cms-updated') reload();
+        };
+      } catch (e) {}
+      window.addEventListener('storage', (e) => {
+        if (e.key === LS_KEY || e.key === 'nexusCMS-ping') reload();
+      });
     }
 
     /* live GitHub refresh — silently updates star/fork counts + adds new repos */
@@ -518,7 +542,7 @@
       // 1. Load cached data immediately
       const data = await loadCached();
       if (!data) {
-        setStatus('No data found. Set up repos in Admin Panel.', 'error');
+        setStatus('No data found.', 'error');
         document.getElementById('pp-grid').innerHTML = '';
         document.getElementById('pp-empty').style.display = 'flex';
         return;
@@ -534,15 +558,30 @@
         renderAll(items, username);
         setStatus('Checking GitHub for updates…', 'loading');
       } else {
-        setStatus(username ? 'Fetching from GitHub…' : 'No repos yet — add them in Admin Panel.', username ? 'loading' : 'idle');
+        setStatus(username ? 'Fetching from GitHub…' : 'No projects yet.', username ? 'loading' : 'idle');
       }
+
+      // Live updates from Admin panel (same browser)
+      listenLiveUpdates(async () => {
+        const live = await loadCached();
+        if (!live) return;
+        applyBranding(live);
+        const liveItems = live.projects?.items || [];
+        const liveUser  = live.projects?.githubUsername || '';
+        if (liveItems.length) renderAll(liveItems, liveUser);
+        else {
+          document.getElementById('pp-grid').innerHTML = '';
+          document.getElementById('pp-empty').style.display = 'flex';
+          setStatus('No projects yet.', 'idle');
+        }
+      });
 
       // 2. Silently refresh from GitHub in background
       if (username) {
         const { items: fresh, changed } = await refreshFromGitHub(username, items);
 
         if (changed) {
-          // Save updated data to localStorage
+          // Save updated data to localStorage (keep draft flag if present)
           if (!data.projects) data.projects = {};
           data.projects.items           = fresh;
           data.projects.githubUsername  = username;

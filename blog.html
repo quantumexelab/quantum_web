@@ -8,6 +8,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" sizes="180x180">
   <link rel="stylesheet" href="styles.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
@@ -113,7 +116,7 @@
       <div id="bp-empty" class="pp-empty" style="display:none">
         <span style="font-size:3rem">📝</span>
         <h3>No articles yet</h3>
-        <p>Add posts in the <a href="admin.html">Admin Panel → Blog</a> section.</p>
+        <p>Blog posts will appear here once they are published.</p>
       </div>
     </div>
   </section>
@@ -204,11 +207,18 @@
     async function loadData() {
       try {
         const s = localStorage.getItem(LS_KEY);
-        if (s) return JSON.parse(s);
-        const r = await fetch('cms-data.json');
+        if (s) {
+          const draft = JSON.parse(s);
+          if (draft && draft._draft === true) return draft;
+        }
+        const r = await fetch('cms-data.json?v=20260715a');
         if (!r.ok) throw new Error();
         return await r.json();
       } catch {
+        try {
+          const s = localStorage.getItem(LS_KEY);
+          if (s) return JSON.parse(s);
+        } catch (e) {}
         return {
           settings: { companyName:'QUANTUMEXE', tagline:'TECHNOLOGIES', logoMark:'QE', accentColor:'#00a8ff', footerText:'Engineering brilliant software that transforms businesses and delights users — since 2018.' },
           blog: [
@@ -460,9 +470,23 @@
       initAnimations();
       initNewsletter();
 
-      const data = await loadData();
-      applyBranding(data);
-      renderAll(data?.blog || []);
+      const applyLive = async () => {
+        const data = await loadData();
+        applyBranding(data);
+        renderAll(data?.blog || []);
+      };
+
+      await applyLive();
+
+      try {
+        const ch = new BroadcastChannel('nexusCMS-live');
+        ch.onmessage = (e) => {
+          if (e.data && e.data.type === 'cms-updated') applyLive();
+        };
+      } catch (e) {}
+      window.addEventListener('storage', (e) => {
+        if (e.key === LS_KEY || e.key === 'nexusCMS-ping') applyLive();
+      });
     }
 
     document.addEventListener('DOMContentLoaded', boot);

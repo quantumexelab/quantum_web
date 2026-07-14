@@ -6,6 +6,9 @@
   <title>QUANTUMEXE Admin Panel</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;900&family=Rajdhani:wght@400;500;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" sizes="180x180">
   <link rel="stylesheet" href="admin.css">
 </head>
 <body>
@@ -27,7 +30,7 @@
         <label>Password</label>
         <input type="password" id="loginPass" placeholder="Enter password" autocomplete="current-password">
       </div>
-      <div id="loginError" class="login-error" style="display:none">Incorrect password. Try <code>admin2026</code></div>
+      <div id="loginError" class="login-error" style="display:none">Incorrect password. Please try again.</div>
       <button type="submit" class="btn-admin btn-primary-admin">Sign In →</button>
     </form>
   </div>
@@ -90,9 +93,10 @@
         <span class="page-title" id="pageTitle">Dashboard</span>
       </div>
       <div class="topbar-right">
-        <button class="btn-admin btn-ghost-admin" id="previewBtn">👁 Preview Site</button>
+        <span class="save-status is-idle" id="saveStatus" title="Edits auto-save as a live draft in this browser">● Ready</span>
+        <button class="btn-admin btn-ghost-admin" id="previewBtn">👁 Preview</button>
         <button class="btn-admin btn-ghost-admin" id="exportBtn">⬇ Export JSON</button>
-        <button class="btn-admin btn-primary-admin" id="saveBtn">💾 Save Changes</button>
+        <button class="btn-admin btn-primary-admin btn-save-glow" id="saveBtn">💾 Save Changes</button>
       </div>
     </header>
 
@@ -164,7 +168,8 @@
         </div>
         <div class="info-box">
           <strong>ℹ How it works</strong>
-          <p>Edit any section and click <b>Save Changes</b>. Changes are saved to your browser and instantly applied to the site preview. Click <b>Export JSON</b> to download <code>cms-data.json</code> — commit it to GitHub to publish changes live for all visitors.</p>
+          <p><b>Auto-save:</b> edits save as a live draft while you type — open <b>Preview</b> and watch the site update in real time in this browser.<br>
+          <b>Publish for everyone:</b> click <b>Export JSON</b>, replace <code>cms-data.json</code> in your project, then git push to Vercel.</p>
         </div>
       </section>
 

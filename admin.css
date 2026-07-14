@@ -145,6 +145,36 @@ a { color: var(--accent); }
 
 .btn-primary-admin:hover { filter: brightness(1.15); }
 
+.btn-save-glow {
+  box-shadow: 0 0 0 1px rgba(255, 200, 80, 0.55), 0 0 18px rgba(0, 168, 255, 0.35);
+  border: 1px solid rgba(255, 210, 100, 0.75) !important;
+}
+
+.save-status {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted, #6e6e88);
+  white-space: nowrap;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+}
+.save-status.is-saving {
+  color: #ffc857;
+  border-color: rgba(255, 200, 87, 0.35);
+  background: rgba(255, 200, 87, 0.08);
+}
+.save-status.is-saved {
+  color: #3dd68c;
+  border-color: rgba(61, 214, 140, 0.35);
+  background: rgba(61, 214, 140, 0.08);
+}
+.save-status.is-idle {
+  color: var(--muted, #6e6e88);
+}
+
 .btn-ghost-admin {
   background: transparent;
   color: var(--text);

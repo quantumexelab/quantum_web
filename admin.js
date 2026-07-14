@@ -5,8 +5,12 @@
 const LS_KEY   = 'nexusCMS';
 const PASS_KEY = 'nexusAdminPass';
 const DEFAULT_PASS = 'admin2026';
+const CMS_CHANNEL = 'nexusCMS-live';
 
 let cmsData = null;
+let autoSaveTimer = null;
+let cmsChannel = null;
+try { cmsChannel = new BroadcastChannel(CMS_CHANNEL); } catch (e) { cmsChannel = null; }
 
 /* ── Boot ── */
 window.addEventListener('DOMContentLoaded', () => {
@@ -49,8 +53,10 @@ function initApp() {
     setupLogoUpload();
     setupNav();
     setupTopbar();
+    setupAutoSave();
     renderDynamicEditors();
     setupChangePassword();
+    setSaveStatus('saved');
   });
 }
 
@@ -58,30 +64,82 @@ function initApp() {
    DATA LOAD / SAVE
    ════════════════════════════════════════ */
 async function loadData() {
-  // 1. Try localStorage first
+  // Prefer intentional browser drafts; otherwise load published cms-data.json
   const saved = localStorage.getItem(LS_KEY);
-  if (saved) { cmsData = JSON.parse(saved); return; }
+  if (saved) {
+    try {
+      const parsed = JSON.parse(saved);
+      if (parsed && parsed._draft === true) {
+        cmsData = parsed;
+        return;
+      }
+    } catch (e) {}
+  }
 
-  // 2. Fetch cms-data.json
   try {
-    const res = await fetch('cms-data.json');
+    const res = await fetch('cms-data.json?v=20260715a');
     cmsData = await res.json();
   } catch {
-    cmsData = getDefaultData();
+    try {
+      cmsData = saved ? JSON.parse(saved) : getDefaultData();
+    } catch {
+      cmsData = getDefaultData();
+    }
   }
 }
 
-function saveData() {
+function notifyLivePreview() {
+  const payload = { type: 'cms-updated', at: Date.now() };
+  try {
+    if (cmsChannel) cmsChannel.postMessage(payload);
+  } catch (e) {}
+  try {
+    localStorage.setItem('nexusCMS-ping', String(payload.at));
+  } catch (e) {}
+}
+
+function setSaveStatus(state) {
+  const el = document.getElementById('saveStatus');
+  const btn = document.getElementById('saveBtn');
+  if (!el) return;
+  el.classList.remove('is-saving', 'is-saved', 'is-idle');
+  if (state === 'saving') {
+    el.classList.add('is-saving');
+    el.textContent = 'Saving…';
+    if (btn) btn.textContent = '💾 Saving…';
+  } else if (state === 'saved') {
+    el.classList.add('is-saved');
+    el.textContent = '● Live draft saved';
+    if (btn) btn.textContent = '💾 Saved';
+    clearTimeout(setSaveStatus._t);
+    setSaveStatus._t = setTimeout(() => {
+      if (btn) btn.textContent = '💾 Save Changes';
+    }, 1600);
+  } else {
+    el.classList.add('is-idle');
+    el.textContent = 'Unsaved edits';
+  }
+}
+
+/** Persist draft to this browser + push live updates to open preview tabs */
+function saveData(opts = {}) {
+  const silent = !!opts.silent;
   collectAllForms();
   cmsData._draft = true;
+  cmsData._updatedAt = Date.now();
   localStorage.setItem(LS_KEY, JSON.stringify(cmsData));
-  showToast('Draft saved in this browser. Export JSON + git push to publish live.', 'success');
+  notifyLivePreview();
+  setSaveStatus('saved');
+  if (!silent) {
+    showToast('Saved. Preview updates live in this browser. Export JSON to publish for everyone.', 'success');
+  }
 }
 
 function exportData() {
   collectAllForms();
   const published = { ...cmsData };
   delete published._draft;
+  delete published._updatedAt;
   const blob = new Blob([JSON.stringify(published, null, 2)], { type: 'application/json' });
   const url  = URL.createObjectURL(blob);
   const a    = document.createElement('a');
@@ -89,10 +147,32 @@ function exportData() {
   a.download = 'cms-data.json';
   a.click();
   URL.revokeObjectURL(url);
-  // Clear draft flag so the public site uses published cms-data.json
-  cmsData = published;
+  // Keep a non-draft copy so this browser matches the download
+  cmsData = { ...published };
   localStorage.setItem(LS_KEY, JSON.stringify(published));
-  showToast('cms-data.json downloaded! Replace the file in your repo and git push.', 'info');
+  notifyLivePreview();
+  setSaveStatus('saved');
+  showToast('cms-data.json downloaded. Replace it in your project folder, then git push to go live.', 'info');
+}
+
+function setupAutoSave() {
+  const app = document.getElementById('adminApp');
+  if (!app) return;
+
+  const schedule = () => {
+    setSaveStatus('saving');
+    clearTimeout(autoSaveTimer);
+    autoSaveTimer = setTimeout(() => saveData({ silent: true }), 450);
+  };
+
+  app.addEventListener('input', (e) => {
+    if (!e.target || !e.target.closest('input, textarea, select')) return;
+    schedule();
+  });
+  app.addEventListener('change', (e) => {
+    if (!e.target || !e.target.closest('input, textarea, select')) return;
+    schedule();
+  });
 }
 
 /* ════════════════════════════════════════
@@ -132,11 +212,11 @@ function switchSection(name) {
    TOP BAR
    ════════════════════════════════════════ */
 function setupTopbar() {
-  document.getElementById('saveBtn').addEventListener('click', saveData);
+  document.getElementById('saveBtn').addEventListener('click', () => saveData({ silent: false }));
   document.getElementById('exportBtn').addEventListener('click', exportData);
   document.getElementById('previewBtn').addEventListener('click', () => {
-    saveData();
-    window.open('index.html', '_blank');
+    saveData({ silent: true });
+    window.open('index.html?preview=1', '_blank');
   });
 }
 
@@ -298,8 +378,7 @@ function renderDynamicEditors() {
     cmsData.projects.items = collectProjects();
     cmsData.projects.items.push({
       id: 'custom-' + Date.now(),
-      type: 'custom',
-      name: 'New Project',
+      type: 'custom',      name: 'New Project',
       description: '',
       githubUrl: '',
       liveUrl: '',
@@ -310,23 +389,27 @@ function renderDynamicEditors() {
       visible: true,
     });
     renderProjectsEditor();
+    saveData({ silent: true });
   });
 
   document.getElementById('addTimelineBtn')?.addEventListener('click', () => {
     cmsData.about.timeline = collectTimeline();
     cmsData.about.timeline.push({ year: new Date().getFullYear().toString(), title: 'New Milestone', desc: '' });
     renderTimelineEditor();
+    saveData({ silent: true });
   });
 
   document.getElementById('addTeamBtn').addEventListener('click', () => {
     cmsData.team = collectTeam(); // save current edits before re-render
     cmsData.team.push({ name: 'New Member', role: 'Role', bio: '', photo: '', linkedin: '', twitter: '', portfolio: '' });
     renderTeamEditor();
+    saveData({ silent: true });
   });
   document.getElementById('addBlogBtn').addEventListener('click', () => {
     cmsData.blog = collectBlog(); // save current edits before re-render
     cmsData.blog.push({ cat: 'CATEGORY', day: '01', month: 'JAN', title: 'New Article', excerpt: '', image: '', featured: false });
     renderBlogEditor();
+    saveData({ silent: true });
   });
 }
 
@@ -445,6 +528,7 @@ function removeTimelineItem(i) {
   cmsData.about.timeline = collectTimeline();
   cmsData.about.timeline.splice(i, 1);
   renderTimelineEditor();
+  saveData({ silent: true });
 }
 
 /* ── TEAM ── */
@@ -538,6 +622,7 @@ function removeMember(i) {
   cmsData.team = collectTeam();
   cmsData.team.splice(i, 1);
   renderTeamEditor();
+  saveData({ silent: true });
 }
 
 /* ── BLOG ── */
@@ -592,6 +677,7 @@ function removeBlog(i) {
   cmsData.blog = collectBlog(); // preserve current edits
   cmsData.blog.splice(i, 1);
   renderBlogEditor();
+  saveData({ silent: true });
 }
 
 /* ── CONTACT CHANNELS ── */
@@ -734,6 +820,7 @@ function removeProject(i) {
   cmsData.projects.items = collectProjects();
   cmsData.projects.items.splice(i, 1);
   renderProjectsEditor();
+  saveData({ silent: true });
 }
 
 /* ── GitHub Auto-Fetch ── */
@@ -798,6 +885,7 @@ async function fetchGithubRepos() {
 
     renderProjectsEditor();
     v('proj-githubUser', username);
+    saveData({ silent: true });
 
     const msg = `✓ Done! ${newCount} new repo${newCount !== 1 ? 's' : ''} added, ${updCount} updated.`;
     statusEl.innerHTML = `<span style="color:var(--success)">${msg}</span>`;
