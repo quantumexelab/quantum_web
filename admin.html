@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QUANTUMEXE Admin Panel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;900&family=Rajdhani:wght@400;500;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+<!-- ═══ LOGIN ═══ -->
+<div id="loginScreen" class="login-screen">
+  <div class="login-card">
+    <div class="login-logo">
+      <span class="login-mark">A</span>
+      <div>
+        <span class="login-title">QUANTUM<span class="logo-accent">EXE</span></span>
+        <span class="login-sub">ADMIN PANEL</span>
+      </div>
+    </div>
+    <h2>Sign In</h2>
+    <p>Enter your admin password to continue</p>
+    <form id="loginForm">
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="loginPass" placeholder="Enter password" autocomplete="current-password">
+      </div>
+      <div id="loginError" class="login-error" style="display:none">Incorrect password. Try <code>admin2026</code></div>
+      <button type="submit" class="btn-admin btn-primary-admin">Sign In →</button>
+    </form>
+  </div>
+</div>
+
+<!-- ═══ ADMIN APP ═══ -->
+<div id="adminApp" class="admin-app" style="display:none">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <span class="login-mark sm">N</span>
+      <div>
+        <span class="login-title sm">QUANTUMEXE</span>
+        <span class="login-sub sm">ADMIN</span>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <button class="nav-item active" data-section="dashboard">
+        <span class="nav-icon">⊞</span> Dashboard
+      </button>
+      <button class="nav-item" data-section="settings">
+        <span class="nav-icon">⚙</span> Settings
+      </button>
+      <button class="nav-item" data-section="hero">
+        <span class="nav-icon">◈</span> Hero
+      </button>
+      <button class="nav-item" data-section="services">
+        <span class="nav-icon">◉</span> Services
+      </button>
+      <button class="nav-item" data-section="about">
+        <span class="nav-icon">◎</span> About
+      </button>
+      <button class="nav-item" data-section="team">
+        <span class="nav-icon">◑</span> Team
+      </button>
+      <button class="nav-item" data-section="blog">
+        <span class="nav-icon">◐</span> Blog
+      </button>
+      <button class="nav-item" data-section="projects">
+        <span class="nav-icon">⬡</span> Projects
+      </button>
+      <button class="nav-item" data-section="contact">
+        <span class="nav-icon">◍</span> Contact
+      </button>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="nav-item danger" id="logoutBtn">
+        <span class="nav-icon">⊗</span> Logout
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="admin-main">
+
+    <!-- Top Bar -->
+    <header class="admin-topbar">
+      <div class="topbar-left">
+        <span class="page-title" id="pageTitle">Dashboard</span>
+      </div>
+      <div class="topbar-right">
+        <button class="btn-admin btn-ghost-admin" id="previewBtn">👁 Preview Site</button>
+        <button class="btn-admin btn-ghost-admin" id="exportBtn">⬇ Export JSON</button>
+        <button class="btn-admin btn-primary-admin" id="saveBtn">💾 Save Changes</button>
+      </div>
+    </header>
+
+    <!-- Toast -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Content Area -->
+    <div class="admin-content">
+
+      <!-- DASHBOARD -->
+      <section id="sec-dashboard" class="admin-section active">
+        <div class="dashboard-grid">
+          <div class="dash-card">
+            <span class="dash-icon">◈</span>
+            <div>
+              <strong>Hero Section</strong>
+              <span>Headline, subtitle, stats</span>
+            </div>
+            <button class="btn-admin btn-ghost-admin sm" onclick="switchSection('hero')">Edit →</button>
+          </div>
+          <div class="dash-card">
+            <span class="dash-icon">◉</span>
+            <div>
+              <strong>Services</strong>
+              <span>3 service cards</span>
+            </div>
+            <button class="btn-admin btn-ghost-admin sm" onclick="switchSection('services')">Edit →</button>
+          </div>
+          <div class="dash-card">
+            <span class="dash-icon">◎</span>
+            <div>
+              <strong>About</strong>
+              <span>Story, features, image</span>
+            </div>
+            <button class="btn-admin btn-ghost-admin sm" onclick="switchSection('about')">Edit →</button>
+          </div>
+          <div class="dash-card">
+            <span class="dash-icon">◑</span>
+            <div>
+              <strong>Team</strong>
+              <span>4 team members</span>
+            </div>
+            <button class="btn-admin btn-ghost-admin sm" onclick="switchSection('team')">Edit →</button>
+          </div>
+          <div class="dash-card">
+            <span class="dash-icon">◐</span>
+            <div>
+              <strong>Blog</strong>
+              <span>4 articles</span>
+            </div>
+            <button class="btn-admin btn-ghost-admin sm" onclick="switchSection('blog')">Edit →</button>
+          </div>
+          <div class="dash-card">
+            <span class="dash-icon">⬡</span>
+            <div>
+              <strong>Projects</strong>
+              <span>GitHub repos + custom</span>
+            </div>
+            <button class="btn-admin btn-ghost-admin sm" onclick="switchSection('projects')">Edit →</button>
+          </div>
+          <div class="dash-card">
+            <span class="dash-icon">◍</span>
+            <div>
+              <strong>Contact</strong>
+              <span>Social channels, copy</span>
+            </div>
+            <button class="btn-admin btn-ghost-admin sm" onclick="switchSection('contact')">Edit →</button>
+          </div>
+        </div>
+        <div class="info-box">
+          <strong>ℹ How it works</strong>
+          <p>Edit any section and click <b>Save Changes</b>. Changes are saved to your browser and instantly applied to the site preview. Click <b>Export JSON</b> to download <code>cms-data.json</code> — commit it to GitHub to publish changes live for all visitors.</p>
+        </div>
+      </section>
+
+      <!-- SETTINGS -->
+      <section id="sec-settings" class="admin-section">
+        <div class="form-card">
+          <h3>Company Identity</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Company Name</label>
+              <input type="text" id="s-companyName">
+            </div>
+            <div class="form-group">
+              <label>Tagline</label>
+              <input type="text" id="s-tagline">
+            </div>
+          </div>
+          <!-- Logo Image Upload -->
+          <div class="form-group">
+            <label>Logo Image <span style="color:var(--muted);font-weight:400">(PNG / SVG / JPG — replaces the letter mark)</span></label>
+            <div class="logo-upload-area" id="logoUploadArea">
+              <img id="s-logoPreview" src="" alt="Logo preview" class="logo-upload-preview" style="display:none">
+              <div id="s-logoPlaceholder" class="upload-placeholder">
+                <span style="font-size:2.2rem">🖼</span>
+                <span>No logo image set</span>
+                <span style="font-size:0.8rem;color:var(--muted)">Transparent PNG or SVG recommended · Max 2 MB</span>
+              </div>
+              <input type="file" id="s-logoFile" accept="image/png,image/svg+xml,image/jpeg,image/webp" style="display:none">
+              <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
+                <button type="button" class="btn-admin btn-ghost-admin sm" id="s-logoChooseBtn">📁 Choose Image</button>
+                <button type="button" class="btn-admin btn-danger-admin sm" id="s-logoRemoveBtn" style="display:none">✕ Remove Logo</button>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Logo Mark (letter — used when no image is set)</label>
+              <input type="text" id="s-logoMark" maxlength="2">
+            </div>
+            <div class="form-group">
+              <label>Accent Color</label>
+              <div class="color-row">
+                <input type="color" id="s-accentColorPicker" class="color-picker">
+                <input type="text"  id="s-accentColor" placeholder="#4f8ef7" maxlength="7">
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Footer Description</label>
+            <textarea id="s-footerText" rows="2"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Default Theme <small>(shown to first-time visitors)</small></label>
+            <div class="theme-choice-row">
+              <label class="theme-choice" id="choice-light">
+                <input type="radio" name="s-defaultTheme" id="s-theme-light" value="light" checked>
+                <span class="theme-choice-box light-box">
+                  <span class="tc-icon">☀️</span>
+                  <span class="tc-label">Light</span>
+                  <span class="tc-sub">Bright, clean look</span>
+                </span>
+              </label>
+              <label class="theme-choice" id="choice-dark">
+                <input type="radio" name="s-defaultTheme" id="s-theme-dark" value="dark">
+                <span class="theme-choice-box dark-box">
+                  <span class="tc-icon">🌙</span>
+                  <span class="tc-label">Dark</span>
+                  <span class="tc-sub">Original dark mode</span>
+                </span>
+              </label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Change Admin Password</label>
+            <div class="form-row">
+              <input type="password" id="s-newPass" placeholder="New password">
+              <input type="password" id="s-confirmPass" placeholder="Confirm password">
+            </div>
+            <button class="btn-admin btn-ghost-admin sm" id="changePassBtn" style="margin-top:8px">Update Password</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- HERO -->
+      <section id="sec-hero" class="admin-section">
+        <div class="form-card">
+          <h3>Badge & Headline</h3>
+          <div class="form-group">
+            <label>Badge Text</label>
+            <input type="text" id="h-badge">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Title Line 1</label>
+              <input type="text" id="h-line1">
+            </div>
+            <div class="form-group">
+              <label>Title Line 2 (accent)</label>
+              <input type="text" id="h-line2">
+            </div>
+            <div class="form-group">
+              <label>Title Line 3</label>
+              <input type="text" id="h-line3">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Subtitle</label>
+            <textarea id="h-subtitle" rows="2"></textarea>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>CTA Button 1 Label</label>
+              <input type="text" id="h-cta1">
+            </div>
+            <div class="form-group">
+              <label>CTA Button 2 Label</label>
+              <input type="text" id="h-cta2">
+            </div>
+          </div>
+        </div>
+        <div class="form-card">
+          <h3>Stats</h3>
+          <div class="stats-grid">
+            <div class="form-card inner">
+              <label>Stat 1</label>
+              <div class="form-row">
+                <div class="form-group"><label>Value</label><input type="number" id="h-s1v"></div>
+                <div class="form-group"><label>Suffix (+, %, K+)</label><input type="text" id="h-s1suf" maxlength="4"></div>
+                <div class="form-group"><label>Label</label><input type="text" id="h-s1l"></div>
+              </div>
+            </div>
+            <div class="form-card inner">
+              <label>Stat 2</label>
+              <div class="form-row">
+                <div class="form-group"><label>Value</label><input type="number" id="h-s2v"></div>
+                <div class="form-group"><label>Suffix</label><input type="text" id="h-s2suf" maxlength="4"></div>
+                <div class="form-group"><label>Label</label><input type="text" id="h-s2l"></div>
+              </div>
+            </div>
+            <div class="form-card inner">
+              <label>Stat 3</label>
+              <div class="form-row">
+                <div class="form-group"><label>Value</label><input type="number" id="h-s3v"></div>
+                <div class="form-group"><label>Suffix</label><input type="text" id="h-s3suf" maxlength="4"></div>
+                <div class="form-group"><label>Label</label><input type="text" id="h-s3l"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SERVICES -->
+      <section id="sec-services" class="admin-section">
+        <div id="services-editor"></div>
+      </section>
+
+      <!-- ABOUT -->
+      <section id="sec-about" class="admin-section">
+
+        <!-- page link -->
+        <div class="admin-page-link-bar">
+          <span>🔗 Live page:</span>
+          <a href="about.html" target="_blank" class="admin-page-link">about.html ↗</a>
+          <span class="admin-page-note">Changes save when you click <strong>Save All</strong></span>
+        </div>
+
+        <!-- Story -->
+        <div class="form-card">
+          <h3>Story</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Title</label>
+              <input type="text" id="a-title">
+            </div>
+            <div class="form-group">
+              <label>Highlight (accent word)</label>
+              <input type="text" id="a-highlight">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Paragraph 1</label>
+            <textarea id="a-p1" rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Paragraph 2</label>
+            <textarea id="a-p2" rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Mission Statement <small>(shown as a pull-quote on the About page)</small></label>
+            <textarea id="a-mission" rows="2" placeholder="We don't just write code — we engineer solutions…"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Photo / Image URL</label>
+            <input type="url" id="a-image" placeholder="https://...">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Badge Icon (emoji)</label>
+              <input type="text" id="a-badgeIcon" maxlength="4">
+            </div>
+            <div class="form-group">
+              <label>Badge Title</label>
+              <input type="text" id="a-badgeTitle">
+            </div>
+            <div class="form-group">
+              <label>Badge Subtitle</label>
+              <input type="text" id="a-badgeSub">
+            </div>
+          </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="form-card">
+          <h3>Stats Bar</h3>
+          <p class="form-card-note">Stats 1–3 are shared with the Hero section. Stat 4 is About-page only.</p>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Stat 4 Value</label>
+              <input type="number" id="a-stat4Val" placeholder="50">
+            </div>
+            <div class="form-group">
+              <label>Stat 4 Suffix</label>
+              <input type="text" id="a-stat4Suf" maxlength="4" placeholder="+">
+            </div>
+            <div class="form-group">
+              <label>Stat 4 Label</label>
+              <input type="text" id="a-stat4Label" placeholder="Engineers">
+            </div>
+          </div>
+        </div>
+
+        <!-- Values heading -->
+        <div class="form-card">
+          <h3>Values Section Heading</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Section Tag</label>
+              <input type="text" id="a-valuesTag" placeholder="WHAT DRIVES US">
+            </div>
+            <div class="form-group">
+              <label>Title</label>
+              <input type="text" id="a-valuesTitle" placeholder="Our Core">
+            </div>
+            <div class="form-group">
+              <label>Highlight Word</label>
+              <input type="text" id="a-valuesHl" placeholder="Values">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <input type="text" id="a-valuesDesc" placeholder="The principles we live by…">
+          </div>
+        </div>
+
+        <!-- Features (values cards) -->
+        <div class="form-card">
+          <h3>Value Cards</h3>
+          <div id="features-editor"></div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="form-card">
+          <h3>Company Timeline</h3>
+          <p class="form-card-note">Each entry shows as a milestone on the About page timeline.</p>
+          <div id="timeline-editor"></div>
+          <button class="btn-admin btn-ghost-admin" id="addTimelineBtn" style="margin-top:16px">+ Add Milestone</button>
+        </div>
+
+      </section>
+
+      <!-- TEAM -->
+      <section id="sec-team" class="admin-section">
+
+        <div class="admin-page-link-bar">
+          <span>🔗 Shown on:</span>
+          <a href="team.html" target="_blank" class="admin-page-link">Team page ↗</a>
+          <span style="color:var(--border)">|</span>
+          <a href="about.html#au-team-section" target="_blank" class="admin-page-link">About Us page ↗</a>
+          <span class="admin-page-note">Click <strong>Save All</strong> to apply changes</span>
+        </div>
+
+        <div id="team-editor"></div>
+        <button class="btn-admin btn-ghost-admin" id="addTeamBtn" style="margin-top:16px">+ Add Member</button>
+      </section>
+
+      <!-- BLOG -->
+      <section id="sec-blog" class="admin-section">
+        <div id="blog-editor"></div>
+        <button class="btn-admin btn-ghost-admin" id="addBlogBtn" style="margin-top:16px">+ Add Article</button>
+      </section>
+
+      <!-- PROJECTS -->
+      <section id="sec-projects" class="admin-section">
+
+        <!-- Section copy -->
+        <div class="form-card">
+          <h3>Section Settings</h3>
+          <div class="form-row">
+            <div class="form-group"><label>Section Tag</label><input type="text" id="proj-tag" placeholder="OUR WORK"></div>
+            <div class="form-group"><label>Title</label><input type="text" id="proj-title"></div>
+            <div class="form-group"><label>Highlight (accent word)</label><input type="text" id="proj-hl"></div>
+          </div>
+          <div class="form-group"><label>Description</label><input type="text" id="proj-desc"></div>
+        </div>
+
+        <!-- GitHub auto-fetch -->
+        <div class="form-card">
+          <h3>Auto-Fetch from GitHub</h3>
+          <div class="info-box" style="margin-bottom:16px">
+            <strong>ℹ How it works</strong>
+            <p>Enter your GitHub username and click <b>Fetch Repos</b>. All public repositories are imported automatically. New repos are added; existing ones keep your manual edits. Star ★ and fork ⑂ counts are always refreshed.</p>
+          </div>
+          <div class="form-row" style="align-items:flex-end">
+            <div class="form-group" style="flex:1">
+              <label>GitHub Username</label>
+              <input type="text" id="proj-githubUser" placeholder="e.g. MinushaNimsara">
+            </div>
+            <button class="btn-admin btn-primary-admin" id="fetchGithubBtn" style="flex-shrink:0;margin-bottom:16px">
+              🔄 Fetch Repos
+            </button>
+          </div>
+          <div id="githubFetchStatus" style="font-size:0.88rem;min-height:24px"></div>
+        </div>
+
+        <!-- Project list -->
+        <div class="form-card">
+          <h3>Projects &nbsp;<span id="proj-count" style="color:var(--accent);font-size:0.75rem"></span></h3>
+          <div id="projects-editor"></div>
+          <button class="btn-admin btn-ghost-admin" id="addProjectBtn" style="margin-top:12px">+ Add Custom Project</button>
+        </div>
+
+      </section>
+
+      <!-- CONTACT -->
+      <section id="sec-contact" class="admin-section">
+        <div class="form-card">
+          <h3>Section Copy</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Title</label>
+              <input type="text" id="c-title">
+            </div>
+            <div class="form-group">
+              <label>Highlight</label>
+              <input type="text" id="c-highlight">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <textarea id="c-desc" rows="2"></textarea>
+          </div>
+        </div>
+        <div class="form-card">
+          <h3>Connect With Us</h3>
+          <p style="color:var(--muted);font-size:0.85rem;margin:-8px 0 16px">Professional / direct contact channels (e.g. LinkedIn, WhatsApp).</p>
+          <div id="channels-editor"></div>
+        </div>
+        <div class="form-card">
+          <h3>Social Media</h3>
+          <p style="color:var(--muted);font-size:0.85rem;margin:-8px 0 16px">Public social profiles (YouTube, X, Instagram, TikTok, etc.).</p>
+          <div id="social-editor"></div>
+        </div>
+      </section>
+
+    </div><!-- /admin-content -->
+  </main>
+</div><!-- /adminApp -->
+
+<script src="admin.js"></script>
+</body>
+</html>
