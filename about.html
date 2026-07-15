@@ -392,7 +392,16 @@
     function applyBranding(d) {
       const s = d?.settings;
       if (!s) return;
-      document.querySelectorAll('.cms-company').forEach(el => el.textContent = s.companyName);
+      document.querySelectorAll('.cms-company').forEach(el => {
+        const name = s.companyName || 'QUANTUMEXE';
+        if (el.classList.contains('logo-title')) {
+          el.innerHTML = name.toUpperCase().endsWith('EXE') && name.length > 3
+            ? name.slice(0, -3) + '<span class="logo-accent">' + name.slice(-3) + '</span>'
+            : name;
+        } else {
+          el.textContent = name;
+        }
+      });
       document.querySelectorAll('.cms-tagline').forEach(el => el.textContent = s.tagline);
       document.querySelectorAll('.cms-logo-mark').forEach(el => el.textContent = s.logoMark || 'A');
       document.title = 'About Us | ' + s.companyName;

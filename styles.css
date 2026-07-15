@@ -667,7 +667,7 @@ html.light-theme .logo-mark-img {
 
 .logo:hover .logo-mark { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
 
-.logo-accent { color: var(--accent); }
+.logo-accent { color: var(--accent) !important; }
 
 /* Logo image (set via admin panel) */
 .logo-img-el {

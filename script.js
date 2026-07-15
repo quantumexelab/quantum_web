@@ -93,6 +93,9 @@ function afterLoad() {
   // Contact / section hashes from other pages (index.html#contact)
   settleHashScroll();
 
+  // Mobile: show hero logo briefly, then auto-scroll to headline (unless user interacts)
+  initMobileHeroIntro();
+
   // After all images/resources load, recalculate scroll positions
   // so cards that are already in view don't stay hidden
   window.addEventListener('load', () => {
@@ -104,6 +107,86 @@ function afterLoad() {
     ScrollTrigger.refresh(true);
     settleHashScroll();
   }, 1000);
+}
+
+/* ════════════════════════════════════════════════
+   MOBILE HERO INTRO  ─ logo pause → scroll to title
+   ════════════════════════════════════════════════ */
+function initMobileHeroIntro() {
+  // Only on the home hero, mobile widths, and when no deep-link hash
+  if (window.location.hash) return;
+  if (!window.matchMedia('(max-width: 768px)').matches) return;
+  if (!document.querySelector('.frost-hero .hero-title') && !document.querySelector('.hero .hero-title')) return;
+
+  const target =
+    document.querySelector('.frost-hero .hero-title') ||
+    document.querySelector('.hero-title') ||
+    document.getElementById('cms-hero-l1');
+  if (!target) return;
+
+  // Start at the top so the stacked 3D logo is visible first
+  window.scrollTo(0, 0);
+
+  let cancelled = false;
+  let timerId = null;
+  let listening = false;
+  const listenOpts = { passive: true, capture: true };
+  const startY = () => window.scrollY || window.pageYOffset || 0;
+  let baselineY = startY();
+
+  const cleanup = () => {
+    if (!listening) return;
+    listening = false;
+    window.removeEventListener('wheel', cancelIntro, listenOpts);
+    window.removeEventListener('touchstart', cancelIntro, listenOpts);
+    window.removeEventListener('touchmove', cancelIntro, listenOpts);
+    window.removeEventListener('pointerdown', cancelIntro, listenOpts);
+    window.removeEventListener('scroll', onUserScroll, listenOpts);
+    window.removeEventListener('keydown', cancelIntro, listenOpts);
+  };
+
+  function cancelIntro() {
+    if (cancelled) return;
+    cancelled = true;
+    if (timerId !== null) {
+      clearTimeout(timerId);
+      timerId = null;
+    }
+    cleanup();
+  }
+
+  function onUserScroll() {
+    if (Math.abs(startY() - baselineY) > 10) cancelIntro();
+  }
+
+  function startListening() {
+    if (listening || cancelled) return;
+    listening = true;
+    baselineY = startY();
+    window.addEventListener('wheel', cancelIntro, listenOpts);
+    window.addEventListener('touchstart', cancelIntro, listenOpts);
+    window.addEventListener('touchmove', cancelIntro, listenOpts);
+    window.addEventListener('pointerdown', cancelIntro, listenOpts);
+    window.addEventListener('scroll', onUserScroll, listenOpts);
+    window.addEventListener('keydown', cancelIntro, listenOpts);
+  }
+
+  // Avoid cancelling from layout/loader scroll noise
+  setTimeout(startListening, 80);
+
+  timerId = setTimeout(() => {
+    if (cancelled) return;
+    cleanup();
+
+    const header = document.getElementById('header');
+    const offset = (header ? header.offsetHeight : 72) + 12;
+
+    gsap.to(window, {
+      duration: 1.15,
+      ease: 'power2.inOut',
+      scrollTo: { y: target, offsetY: offset, autoKill: true },
+    });
+  }, 3000);
 }
 
 /* ════════════════════════════════════════════════
