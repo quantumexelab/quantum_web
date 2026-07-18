@@ -4817,7 +4817,7 @@ html.light-theme .btn-primary {
     border-width: 1px;
   }
   html.light-theme .glitch-line {
-    font-size: clamp(1.7rem, 8.4vw, 2.55rem);
+    font-size: clamp(2rem, 10.2vw, 3.1rem);
     line-height: 1.05;
   }
   html.light-theme .hero-sub {
@@ -4943,7 +4943,7 @@ html.light-theme .btn-primary {
     max-height: 190px;
   }
   html.light-theme .glitch-line {
-    font-size: clamp(1.5rem, 8.6vw, 2.15rem);
+    font-size: clamp(1.8rem, 10.2vw, 2.7rem);
   }
   html.light-theme .hero-badge {
     font-size: 0.58rem;
@@ -5378,7 +5378,7 @@ html:not(.light-theme) .nav-link.active-page::before {
   }
   html:not(.light-theme) .glitch-line,
   html:not(.light-theme) .home-landing .glitch-line {
-    font-size: clamp(1.7rem, 8.4vw, 2.55rem);
+    font-size: clamp(2rem, 10.2vw, 3.1rem);
     line-height: 1.05;
   }
   html:not(.light-theme) .hero-sub {
@@ -5437,7 +5437,7 @@ html:not(.light-theme) .nav-link.active-page::before {
   }
   html:not(.light-theme) .glitch-line,
   html:not(.light-theme) .home-landing .glitch-line {
-    font-size: clamp(1.5rem, 8.6vw, 2.15rem);
+    font-size: clamp(1.8rem, 10.2vw, 2.7rem);
   }
   html:not(.light-theme) .logo-sub { display: none; }
 }
