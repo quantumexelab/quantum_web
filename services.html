@@ -7,7 +7,7 @@
   <title>Services | QUANTUMEXE Technologies</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Outfit:wght@400;500;600;700;800&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="icon" href="assets/favicon-32.png" type="image/png" sizes="32x32">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" sizes="180x180">
@@ -23,10 +23,11 @@
     <div class="cursor-outer"></div>
   </div>
 
-  <!-- ═══ HEADER ═══ -->
+  <!-- Header (matches index.html) -->
   <header class="header" id="header">
     <div class="container header-inner">
       <a href="index.html" class="logo">
+        <img class="logo-mark-img" src="assets/qe-logo.svg?v=12" width="44" height="48" alt="QE">
         <span class="logo-mark cms-logo-mark">QE</span>
         <img class="cms-logo-img logo-img-el" src="" alt="Logo" style="display:none">
         <div class="logo-text-wrap">
@@ -36,13 +37,13 @@
       </a>
       <nav class="nav" id="nav">
         <ul class="nav-list">
-          <li><a href="index.html"          class="nav-link">Home</a></li>
-          <li><a href="services.html"       class="nav-link active-page">Services</a></li>
-          <li><a href="about.html"    class="nav-link">About</a></li>
-          <li><a href="team.html"     class="nav-link">Team</a></li>
-          <li><a href="blog.html"           class="nav-link">Blog</a></li>
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="services.html" class="nav-link active-page">Services</a></li>
+          <li><a href="about.html" class="nav-link">About</a></li>
+          <li><a href="team.html" class="nav-link">Team</a></li>
+          <li><a href="blog.html" class="nav-link">Blog</a></li>
           <li><a href="projects.html" class="nav-link">Projects</a></li>
-          <li><a href="index.html#contact"  class="nav-link nav-cta">Contact</a></li>
+          <li><a href="index.html#contact" class="nav-link nav-cta">Contact</a></li>
         </ul>
         <button class="nav-close" id="navClose" aria-label="Close">✕</button>
       </nav>
@@ -204,10 +205,12 @@
         <div class="footer-links">
           <h4>Connect</h4>
           <ul>
-            <li><a href="#">LinkedIn</a></li>
-            <li><a href="#">GitHub</a></li>
-            <li><a href="#">Twitter / X</a></li>
-            <li><a href="#">YouTube</a></li>
+            <li><a href="tel:+94706868950">+94 70 686 8950</a></li>
+            <li><a href="https://wa.me/94706868950" target="_blank" rel="noopener">WhatsApp</a></li>
+            <li><a href="https://www.linkedin.com/in/quantum-exe-63a811422/" target="_blank" rel="noopener">LinkedIn</a></li>
+            <li><a href="https://www.instagram.com/quantumexe_/" target="_blank" rel="noopener">Instagram</a></li>
+            <li><a href="https://www.youtube.com/@quantumexeyt" target="_blank" rel="noopener">YouTube</a></li>
+            <li><a href="https://www.tiktok.com/@quantumexe_" target="_blank" rel="noopener">TikTok</a></li>
           </ul>
         </div>
       </div>
@@ -270,6 +273,7 @@
       if (s.logoImage) {
         document.querySelectorAll('.cms-logo-img').forEach(img => { img.src = s.logoImage; img.style.display = 'block'; });
         document.querySelectorAll('.cms-logo-mark').forEach(el => el.style.display = 'none');
+        document.querySelectorAll('.logo-mark-img').forEach(el => el.style.display = 'none');
       }
     }
 

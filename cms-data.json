@@ -203,10 +203,9 @@
     ]
   },
   "team": [
-    { "name": "Alex Chen",   "role": "CEO & Founder",       "bio": "10+ years building scalable products. Previously at Google and Stripe.", "photo": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&q=80", "linkedin": "#", "twitter": "#", "portfolio": "#" },
-    { "name": "Jordan Lee",  "role": "CTO & Lead Engineer", "bio": "Full-stack architect obsessed with performance and developer experience.", "photo": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=500&q=80", "linkedin": "#", "twitter": "#", "portfolio": "#" },
-    { "name": "Sam Rivera",  "role": "Head of Design",      "bio": "Crafting interfaces that delight users and drive business growth.", "photo": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=500&q=80", "linkedin": "#", "twitter": "#", "portfolio": "#" },
-    { "name": "Maya Patel",  "role": "Cloud Architect",     "bio": "AWS-certified engineer specialising in distributed systems and DevOps.", "photo": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=500&q=80", "linkedin": "#", "twitter": "#", "portfolio": "#" }
+    { "name": "Minusha Nimsara", "role": "Lead Full-Stack Developer", "bio": "", "photo": "assets/minusha.jpeg?v=2", "linkedin": "#", "twitter": "#", "portfolio": "#" },
+    { "name": "Sadeesha Heshan", "role": "Business Development & Client Relations Manager", "bio": "", "photo": "assets/sadeesha.jpeg", "linkedin": "#", "twitter": "#", "portfolio": "#" },
+    { "name": "Kusal Deemantha", "role": "Front-End Developer & QA Engineer", "bio": "", "photo": "assets/deema.jpeg?v=2", "linkedin": "#", "twitter": "#", "portfolio": "#" }
   ],
   "blog": [
     { "cat": "ENGINEERING", "day": "20", "month": "FEB", "title": "How We Scaled Our API to Handle 10 Million Requests per Day", "excerpt": "A deep dive into the architectural decisions, caching strategies, and infrastructure changes that took our platform to the next level...", "image": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=900&q=80", "featured": true },
@@ -227,14 +226,14 @@
     "highlight": "Something Great",
     "desc": "Have a project in mind? Send us your email and our team will reach out within 24 hours to discuss your vision.",
     "channels": [
-      { "icon": "💼", "title": "LinkedIn", "sub": "Follow our journey", "link": "#" },
-      { "icon": "💬", "title": "WhatsApp", "sub": "Chat with us anytime", "link": "#" }
+      { "icon": "📞", "title": "Phone", "sub": "+94 70 686 8950", "link": "tel:+94706868950" },
+      { "icon": "💼", "title": "LinkedIn", "sub": "Follow our journey", "link": "https://www.linkedin.com/in/quantum-exe-63a811422/" },
+      { "icon": "💬", "title": "WhatsApp", "sub": "+94 70 686 8950", "link": "https://wa.me/94706868950" }
     ],
     "social": [
-      { "icon": "🎬", "title": "YouTube",   "sub": "Tutorials & Talks",  "link": "#" },
-      { "icon": "𝕏",  "title": "X",         "sub": "Engineering updates", "link": "#" },
-      { "icon": "📸", "title": "Instagram", "sub": "Behind the scenes",  "link": "#" },
-      { "icon": "🎵", "title": "TikTok",    "sub": "Shorts & tips",      "link": "#" }
+      { "icon": "🎬", "title": "YouTube",   "sub": "Tutorials & Talks",  "link": "https://www.youtube.com/@quantumexeyt" },
+      { "icon": "📸", "title": "Instagram", "sub": "Behind the scenes",  "link": "https://www.instagram.com/quantumexe_/" },
+      { "icon": "🎵", "title": "TikTok",    "sub": "Shorts & tips",      "link": "https://www.tiktok.com/@quantumexe_" }
     ]
   }
 }

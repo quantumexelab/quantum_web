@@ -77,7 +77,7 @@ async function loadData() {
   }
 
   try {
-    const res = await fetch('cms-data.json?v=20260715a');
+    const res = await fetch('cms-data.json?v=20260716photos');
     cmsData = await res.json();
   } catch {
     try {
@@ -1018,10 +1018,9 @@ function getDefaultData() {
     ],
     about: { title:'We Build Software', highlight:'That Matters.', p1:'A team of engineers passionate about software.', p2:'From MVP to enterprise-scale platforms.', image:'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=900&q=80', badgeIcon:'💻', badgeTitle:'Since 2018', badgeSub:'Delivering Excellence', features:[{icon:'⚡',title:'Agile',sub:'Fast sprints'},{icon:'🔒',title:'Secure',sub:'Security first'},{icon:'💎',title:'Quality Obsessed',sub:'Polished, tested, built to last'},{icon:'🤝',title:'True Partnership',sub:'Your goals guide every decision'}] },
     team: [
-      { name:'Alex Chen', role:'CEO & Founder', photo:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&q=80' },
-      { name:'Jordan Lee', role:'CTO', photo:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=500&q=80' },
-      { name:'Sam Rivera', role:'Head of Design', photo:'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=500&q=80' },
-      { name:'Maya Patel', role:'Cloud Architect', photo:'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=500&q=80' },
+      { name:'Minusha Nimsara', role:'Lead Full-Stack Developer', photo:'assets/minusha.jpeg?v=2' },
+      { name:'Sadeesha Heshan', role:'Business Development & Client Relations Manager', photo:'assets/sadeesha.jpeg' },
+      { name:'Kusal Deemantha', role:'Front-End Developer & QA Engineer', photo:'assets/deema.jpeg?v=2' },
     ],
     blog: [
       { cat:'ENGINEERING', day:'20', month:'FEB', title:'Scaling Our API to 10M Requests/Day', excerpt:'A deep dive...', image:'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=900&q=80', featured:true },
@@ -1029,6 +1028,6 @@ function getDefaultData() {
       { cat:'COMPANY', day:'08', month:'FEB', title:'We Raised $4M', excerpt:'', image:'https://images.unsplash.com/photo-1618401479427-c8ef9465fbe1?w=600&q=80', featured:false },
       { cat:'DEVOPS', day:'01', month:'FEB', title:'Zero-Downtime Deployments', excerpt:'', image:'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=600&q=80', featured:false },
     ],
-    contact: { title:"Let's Build", highlight:'Something Great', desc:'Have a project? Reach out.', channels:[{icon:'💼',title:'LinkedIn',sub:'Follow us',link:'#'},{icon:'💬',title:'WhatsApp',sub:'Chat with us anytime',link:'#'}], social:[{icon:'🎬',title:'YouTube',sub:'Tutorials & Talks',link:'#'},{icon:'𝕏',title:'X',sub:'Engineering updates',link:'#'},{icon:'📸',title:'Instagram',sub:'Behind the scenes',link:'#'},{icon:'🎵',title:'TikTok',sub:'Shorts & tips',link:'#'}] },
+    contact: { title:"Let's Build", highlight:'Something Great', desc:'Have a project? Reach out.', channels:[{icon:'📞',title:'Phone',sub:'+94 70 686 8950',link:'tel:+94706868950'},{icon:'💼',title:'LinkedIn',sub:'Follow us',link:'https://www.linkedin.com/in/quantum-exe-63a811422/'},{icon:'💬',title:'WhatsApp',sub:'+94 70 686 8950',link:'https://wa.me/94706868950'}], social:[{icon:'🎬',title:'YouTube',sub:'Tutorials & Talks',link:'https://www.youtube.com/@quantumexeyt'},{icon:'📸',title:'Instagram',sub:'Behind the scenes',link:'https://www.instagram.com/quantumexe_/'},{icon:'🎵',title:'TikTok',sub:'Shorts & tips',link:'https://www.tiktok.com/@quantumexe_'}] },
   };
 }

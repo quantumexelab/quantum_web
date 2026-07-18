@@ -7,7 +7,7 @@
   <title>Team | QUANTUMEXE Technologies</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Outfit:wght@400;500;600;700;800&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="icon" href="assets/favicon-32.png" type="image/png" sizes="32x32">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" sizes="180x180">
@@ -22,9 +22,11 @@
     <div class="cursor-outer"></div>
   </div>
 
+  <!-- Header (matches index.html) -->
   <header class="header" id="header">
     <div class="container header-inner">
       <a href="index.html" class="logo">
+        <img class="logo-mark-img" src="assets/qe-logo.svg?v=12" width="44" height="48" alt="QE">
         <span class="logo-mark cms-logo-mark">QE</span>
         <img class="cms-logo-img logo-img-el" src="" alt="Logo" style="display:none">
         <div class="logo-text-wrap">
@@ -142,10 +144,12 @@
         <div class="footer-links">
           <h4>Connect</h4>
           <ul>
-            <li><a href="#">LinkedIn</a></li>
-            <li><a href="#">GitHub</a></li>
-            <li><a href="#">Twitter / X</a></li>
-            <li><a href="#">YouTube</a></li>
+            <li><a href="tel:+94706868950">+94 70 686 8950</a></li>
+            <li><a href="https://wa.me/94706868950" target="_blank" rel="noopener">WhatsApp</a></li>
+            <li><a href="https://www.linkedin.com/in/quantum-exe-63a811422/" target="_blank" rel="noopener">LinkedIn</a></li>
+            <li><a href="https://www.instagram.com/quantumexe_/" target="_blank" rel="noopener">Instagram</a></li>
+            <li><a href="https://www.youtube.com/@quantumexeyt" target="_blank" rel="noopener">YouTube</a></li>
+            <li><a href="https://www.tiktok.com/@quantumexe_" target="_blank" rel="noopener">TikTok</a></li>
           </ul>
         </div>
       </div>
@@ -162,10 +166,9 @@
     if (yr) yr.textContent = new Date().getFullYear();
 
     const DEFAULT_TEAM = [
-      { name:'Alex Chen', role:'CEO & Founder', bio:'10+ years building scalable products. Previously at Google and Stripe.', photo:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&q=80', linkedin:'#', twitter:'#', portfolio:'#' },
-      { name:'Jordan Lee', role:'CTO & Lead Engineer', bio:'Full-stack architect obsessed with performance and developer experience.', photo:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=500&q=80', linkedin:'#', twitter:'#', portfolio:'#' },
-      { name:'Sam Rivera', role:'Head of Design', bio:'Crafting interfaces that delight users and drive business growth.', photo:'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=500&q=80', linkedin:'#', twitter:'#', portfolio:'#' },
-      { name:'Maya Patel', role:'Cloud Architect', bio:'AWS-certified engineer specialising in distributed systems and DevOps.', photo:'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=500&q=80', linkedin:'#', twitter:'#', portfolio:'#' }
+      { name:'Minusha Nimsara', role:'Lead Full-Stack Developer', bio:'', photo:'assets/minusha.jpeg?v=2', linkedin:'#', twitter:'#', portfolio:'#' },
+      { name:'Sadeesha Heshan', role:'Business Development & Client Relations Manager', bio:'', photo:'assets/sadeesha.jpeg', linkedin:'#', twitter:'#', portfolio:'#' },
+      { name:'Kusal Deemantha', role:'Front-End Developer & QA Engineer', bio:'', photo:'assets/deema.jpeg?v=2', linkedin:'#', twitter:'#', portfolio:'#' }
     ];
 
     function esc(s) {
@@ -174,7 +177,7 @@
 
     async function loadData() {
       try {
-        const r = await fetch('cms-data.json?v=20260711');
+        const r = await fetch('cms-data.json?v=20260716photos');
         if (r.ok) {
           const published = await r.json();
           try {
@@ -213,6 +216,7 @@
       if (s.logoImage) {
         document.querySelectorAll('.cms-logo-img').forEach(img => { img.src = s.logoImage; img.style.display = 'block'; });
         document.querySelectorAll('.cms-logo-mark').forEach(el => el.style.display = 'none');
+        document.querySelectorAll('.logo-mark-img').forEach(el => el.style.display = 'none');
       }
     }
 

@@ -114,25 +114,31 @@ function afterLoad() {
    ════════════════════════════════════════════════ */
 function initMobileHeroIntro() {
   // Only on the home hero, mobile widths, and when no deep-link hash
-  if (window.location.hash) return;
+  if (window.location.hash && window.location.hash !== '#') return;
   if (!window.matchMedia('(max-width: 768px)').matches) return;
-  if (!document.querySelector('.frost-hero .hero-title') && !document.querySelector('.hero .hero-title')) return;
 
   const target =
     document.querySelector('.frost-hero .hero-title') ||
+    document.querySelector('.hero .hero-title') ||
     document.querySelector('.hero-title') ||
     document.getElementById('cms-hero-l1');
   if (!target) return;
 
-  // Start at the top so the stacked 3D logo is visible first
+  const visual =
+    document.querySelector('.frost-hero .hero-visual') ||
+    document.querySelector('.hero-visual');
+
+  // Pin to top so the 3D logo shows first (ignore CSS smooth-scroll fighting this)
+  const html = document.documentElement;
+  const prevBehavior = html.style.scrollBehavior;
+  html.style.scrollBehavior = 'auto';
   window.scrollTo(0, 0);
+  html.style.scrollBehavior = prevBehavior;
 
   let cancelled = false;
   let timerId = null;
   let listening = false;
   const listenOpts = { passive: true, capture: true };
-  const startY = () => window.scrollY || window.pageYOffset || 0;
-  let baselineY = startY();
 
   const cleanup = () => {
     if (!listening) return;
@@ -140,9 +146,7 @@ function initMobileHeroIntro() {
     window.removeEventListener('wheel', cancelIntro, listenOpts);
     window.removeEventListener('touchstart', cancelIntro, listenOpts);
     window.removeEventListener('touchmove', cancelIntro, listenOpts);
-    window.removeEventListener('pointerdown', cancelIntro, listenOpts);
-    window.removeEventListener('scroll', onUserScroll, listenOpts);
-    window.removeEventListener('keydown', cancelIntro, listenOpts);
+    window.removeEventListener('keydown', onKeyCancel, listenOpts);
   };
 
   function cancelIntro() {
@@ -155,37 +159,61 @@ function initMobileHeroIntro() {
     cleanup();
   }
 
-  function onUserScroll() {
-    if (Math.abs(startY() - baselineY) > 10) cancelIntro();
+  function onKeyCancel(e) {
+    const keys = ['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', 'Home', 'End', ' ', 'Spacebar'];
+    if (keys.includes(e.key)) cancelIntro();
   }
 
   function startListening() {
     if (listening || cancelled) return;
     listening = true;
-    baselineY = startY();
+    // Only real user gestures — NOT window "scroll"
+    // (ScrollTrigger.refresh / address-bar resize used to false-cancel this)
     window.addEventListener('wheel', cancelIntro, listenOpts);
     window.addEventListener('touchstart', cancelIntro, listenOpts);
     window.addEventListener('touchmove', cancelIntro, listenOpts);
-    window.addEventListener('pointerdown', cancelIntro, listenOpts);
-    window.addEventListener('scroll', onUserScroll, listenOpts);
-    window.addEventListener('keydown', cancelIntro, listenOpts);
+    window.addEventListener('keydown', onKeyCancel, listenOpts);
   }
 
-  // Avoid cancelling from layout/loader scroll noise
-  setTimeout(startListening, 80);
+  // Wait past loader dismiss + early layout/ScrollTrigger noise before arming cancel
+  setTimeout(startListening, 350);
 
   timerId = setTimeout(() => {
     if (cancelled) return;
     cleanup();
 
     const header = document.getElementById('header');
-    const offset = (header ? header.offsetHeight : 72) + 12;
+    const offset = ((header && header.offsetHeight) || 72) + 16;
+    let dest = Math.max(0, target.getBoundingClientRect().top + window.pageYOffset - offset);
 
-    gsap.to(window, {
-      duration: 1.15,
-      ease: 'power2.inOut',
-      scrollTo: { y: target, offsetY: offset, autoKill: true },
-    });
+    // If title is already near the top, push further so the stacked logo clears the fold
+    if (dest < 48 && visual) {
+      const visualBottom = visual.getBoundingClientRect().bottom + window.pageYOffset;
+      dest = Math.max(dest, Math.max(0, visualBottom - offset - 8));
+    }
+
+    // Still nothing to do — title already framed
+    if (dest < 24) return;
+
+    html.style.scrollBehavior = 'auto';
+
+    const restore = () => {
+      html.style.scrollBehavior = prevBehavior;
+    };
+
+    if (typeof gsap !== 'undefined' && typeof ScrollToPlugin !== 'undefined') {
+      gsap.to(window, {
+        duration: 1.15,
+        ease: 'power2.inOut',
+        scrollTo: { y: dest, autoKill: false },
+        overwrite: true,
+        onComplete: restore,
+        onInterrupt: restore,
+      });
+    } else {
+      window.scrollTo({ top: dest, behavior: 'smooth' });
+      setTimeout(restore, 1300);
+    }
   }, 3000);
 }
 
@@ -754,16 +782,28 @@ function scrollToTarget(target, instant) {
   document.body.style.overflow = '';
   document.body.classList.remove('nav-open');
 
-  if (instant || typeof gsap === 'undefined') {
+  // Temporary: CSS scroll-behavior can fight GSAP / cancel short tweens
+  const html = document.documentElement;
+  const prevBehavior = html.style.scrollBehavior;
+  html.style.scrollBehavior = 'auto';
+
+  const restoreBehavior = () => {
+    html.style.scrollBehavior = prevBehavior;
+  };
+
+  if (instant || typeof gsap === 'undefined' || typeof ScrollToPlugin === 'undefined') {
     window.scrollTo(0, y);
+    restoreBehavior();
     return;
   }
 
   gsap.to(window, {
-    scrollTo: { y, autoKill: true },
+    scrollTo: { y, autoKill: false },
     duration: 0.9,
     ease: 'power3.inOut',
     overwrite: true,
+    onComplete: restoreBehavior,
+    onInterrupt: restoreBehavior,
   });
 }
 
@@ -819,7 +859,7 @@ function initSmoothScroll() {
       requestAnimationFrame(() => {
         scrollToTarget(target, false);
         // Retry once — iOS sometimes ignores the first scroll while the menu paints away
-        setTimeout(() => scrollToTarget(target, true), 80);
+        setTimeout(() => scrollToTarget(target, true), 120);
       });
     });
   });
