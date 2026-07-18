@@ -3902,18 +3902,20 @@ html.light-theme .reviews-actions .btn-outline:hover {
   }
   .loader-bar-wrap { width: min(280px, 80vw); }
 
-  /* Hero — share viewport with marquees */
+  /* Hero — auto height on mobile so nothing gets clipped */
   .home-landing {
-    height: 100svh;
+    height: auto;
     min-height: 100svh;
+    overflow: visible;
+    overflow-x: clip;
   }
   .hero {
     min-height: 0;
     height: auto;
-    overflow: hidden;
+    overflow: visible;
     align-items: center;
     justify-content: center;
-    padding: 68px 0 52px;
+    padding: 68px 0 3rem;
   }
   .hero-content {
     padding: 0 12px;
@@ -3950,6 +3952,8 @@ html.light-theme .reviews-actions .btn-outline:hover {
     overflow-wrap: normal;
     line-height: 1.08;
   }
+  /* Home hero lines are single words — never allow mid-word breaks */
+  .home-landing .glitch-line { white-space: nowrap; }
   .hero-sub {
     font-size: 0.95rem;
     padding: 0 4px;
@@ -4794,12 +4798,20 @@ html.light-theme .btn-primary {
     overflow-x: clip;
   }
   html.light-theme .hero-shell {
-    padding: 16px 12px 18px;
+    padding: 16px 12px 28px;
     border-radius: 18px;
     max-width: 100%;
   }
-  html.light-theme .frost-hero { overflow: visible; }
-  html.light-theme .hero-split { gap: 10px; }
+  html.light-theme .frost-hero {
+    overflow: visible;
+    height: auto;
+    min-height: 0;
+    padding-bottom: 3rem;
+  }
+  html.light-theme .hero-split {
+    gap: 10px;
+    min-height: 0;
+  }
   html.light-theme .hero-visual {
     min-height: 200px;
     max-width: 100%;
@@ -4817,8 +4829,9 @@ html.light-theme .btn-primary {
     border-width: 1px;
   }
   html.light-theme .glitch-line {
-    font-size: clamp(2rem, 10.2vw, 3.1rem);
+    font-size: clamp(1.9rem, 9.2vw, 2.9rem);
     line-height: 1.05;
+    white-space: nowrap;
   }
   html.light-theme .hero-sub {
     font-size: 0.95rem;
@@ -4831,6 +4844,7 @@ html.light-theme .btn-primary {
     align-items: stretch;
     width: 100%;
     gap: 10px;
+    margin-bottom: 10px;
   }
   html.light-theme .hero-cta .btn {
     width: 100%;
@@ -4943,7 +4957,8 @@ html.light-theme .btn-primary {
     max-height: 190px;
   }
   html.light-theme .glitch-line {
-    font-size: clamp(1.8rem, 10.2vw, 2.7rem);
+    font-size: clamp(1.65rem, 9.2vw, 2.5rem);
+    white-space: nowrap;
   }
   html.light-theme .hero-badge {
     font-size: 0.58rem;
@@ -5365,11 +5380,20 @@ html:not(.light-theme) .nav-link.active-page::before {
     height: auto;
     overflow-x: clip;
   }
+  html:not(.light-theme) .frost-hero {
+    height: auto;
+    min-height: 0;
+    overflow: visible;
+    padding-bottom: 3rem;
+  }
   html:not(.light-theme) .hero-shell {
-    padding: 16px 12px 18px;
+    padding: 16px 12px 28px;
     border-radius: 18px;
   }
-  html:not(.light-theme) .hero-split { gap: 10px; }
+  html:not(.light-theme) .hero-split {
+    gap: 10px;
+    min-height: 0;
+  }
   html:not(.light-theme) .hero-visual { min-height: 200px; }
   html:not(.light-theme) .qe-stage { width: min(240px, 72vw); }
   html:not(.light-theme) .qe-logo-img {
@@ -5378,8 +5402,9 @@ html:not(.light-theme) .nav-link.active-page::before {
   }
   html:not(.light-theme) .glitch-line,
   html:not(.light-theme) .home-landing .glitch-line {
-    font-size: clamp(2rem, 10.2vw, 3.1rem);
+    font-size: clamp(1.9rem, 9.2vw, 2.9rem);
     line-height: 1.05;
+    white-space: nowrap;
   }
   html:not(.light-theme) .hero-sub {
     font-size: 0.95rem;
@@ -5396,6 +5421,7 @@ html:not(.light-theme) .nav-link.active-page::before {
     justify-content: center;
     min-height: 48px;
   }
+  html:not(.light-theme) .hero-cta { margin-bottom: 10px; }
   html:not(.light-theme) .frost-features {
     grid-template-columns: 1fr;
     gap: 10px;
@@ -5437,7 +5463,8 @@ html:not(.light-theme) .nav-link.active-page::before {
   }
   html:not(.light-theme) .glitch-line,
   html:not(.light-theme) .home-landing .glitch-line {
-    font-size: clamp(1.8rem, 10.2vw, 2.7rem);
+    font-size: clamp(1.65rem, 9.2vw, 2.5rem);
+    white-space: nowrap;
   }
   html:not(.light-theme) .logo-sub { display: none; }
 }
